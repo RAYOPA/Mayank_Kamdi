@@ -1,84 +1,550 @@
-/* Global CSS and design tokens */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ==========================================================================
+   Design Tokens & Portfolio Ground
+   ========================================================================== */
 :root {
+  /* Core brand palette */
+  --paper: #FAF5E9;
   --color-bg-primary: #FAF5E9;
   --color-primary: #1A3E72;
   --color-accent-gold: #D4AF37;
   --color-text-primary: #111111;
-  --font-family-sans: 'Inter', system-ui, sans-serif;
+
+  /* Extended fresco tokens */
+  --cobalt: #1A3E72;
+  --cobalt-dark: #12294C;
+  --cobalt-light: #2A569E;
+  --gold: #D4AF37;
+  --gold-deep: #B07A35;
+  --gold-light: #F1D08E;
+  --sepia: #7A4A22;
+  --ink: #16120F;
+  --ink-secondary: #3D3029;
+  --ink-muted: #6E5A4C;
+  --cyanotype: #2A4A8C;
+  --sanguine: #9E452A;
+
+  /* Typography */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-display: 'Cinzel', 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', Consolas, monospace;
 }
 
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  font-family: var(--font-family-sans);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
   line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Hero layout */
-.hero-container {
+/* ==========================================================================
+   Fresco Hero Layout & Canvas Container
+   ========================================================================== */
+.fresco-hero {
   position: relative;
   width: 100%;
-  aspect-ratio: 1672 / 941;
+  min-height: 100vh;
+  min-height: 100svh;
   overflow: hidden;
+  background: var(--paper);
+  isolation: isolate;
 }
 
-.hero-layer {
+/* Background parchment texture & tint wash */
+.fresco-paper {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
+  background-color: var(--paper);
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(241, 208, 142, 0.08) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(26, 62, 114, 0.02) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Responsive stage container */
+.fresco-stage {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  overflow: hidden;
+  container-type: size;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Canonical 1672 × 941 Art Frame */
+.fresco-frame {
+  --fw: min(max(100cqw, 177.68cqh), 1.15 * min(100cqw, 177.68cqh));
+  position: absolute;
+  width: var(--fw);
+  aspect-ratio: 1672 / 941;
+  left: calc(50% - var(--fw) * 0.500418); /* Anchor split axis at center */
+  top: calc(50% - var(--fw) * 0.28140);
   pointer-events: none;
 }
 
-.hero-content {
+/* Portrait Re-composition:
+   Elevates artwork to grant breathing room for title and actions */
+@container (max-aspect-ratio: 11/10) {
+  .fresco-frame {
+    --fw: min(152cqw, 90cqh);
+    left: calc(50% - var(--fw) * 0.5);
+    top: calc(52% - var(--fw) * 0.26375);
+  }
+}
+
+/* Individual Art Layers */
+.fresco-layer {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.fresco-layer--bg {
+  z-index: 1;
+  opacity: 0.98;
+}
+
+.fresco-layer--human {
+  z-index: 2;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fresco-layer--machine {
+  z-index: 3;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Breathing Golden Light Touchpoint */
+.fresco-glint {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  margin: -24px 0 0 -24px;
+  pointer-events: none;
+  z-index: 5;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 235, 170, 0.95) 0%, rgba(212, 175, 55, 0.45) 32%, rgba(212, 175, 55, 0) 70%);
+  animation: glint-breathe 6.5s ease-in-out infinite;
+}
+
+@keyframes glint-breathe {
+  0%, 100% {
+    transform: scale(0.85);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.95;
+  }
+}
+
+/* Paper veil / soft transition wash */
+.fresco-veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0.12;
+  background: radial-gradient(ellipse at 50% 50%, transparent 60%, var(--paper) 100%);
+}
+
+/* ==========================================================================
+   Hero Content & Typography Hierarchy (Matches Reference Composition)
+   ========================================================================== */
+.fresco-content {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  text-align: center;
-  padding: 2rem;
-  max-width: 800px;
-  margin: auto;
+  padding: clamp(1rem, 2.2vw, 2.2rem) clamp(1.4rem, 3.5vw, 3.8rem);
+  box-sizing: border-box;
+  pointer-events: none; /* Let clicks pass through empty negative space */
+}
+
+/* Interactive elements take pointer events */
+.fresco-content a,
+.fresco-content button {
   pointer-events: auto;
 }
 
-.hero-content h1 {
-  font-size: 2.5rem;
-  margin: 0.5rem 0;
-  font-weight: 700;
+/* Top Navigation Bar */
+.fresco-nav {
+  width: 100%;
+  max-width: 1560px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: auto;
 }
 
-.hero-content p {
-  font-size: 1.25rem;
-  margin: 0.5rem 0 1.5rem;
+.fresco-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: var(--ink);
 }
 
-.hero-content .cta-btn {
-  background: var(--color-primary);
-  color: #fff;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background 0.3s;
+.fresco-brand__star {
+  color: #B07A35;
+  font-size: 1.15rem;
+  line-height: 1;
 }
 
-/* CTA micro‑interactions */
-.cta-btn:hover {
-  background: var(--color-accent-gold);
+.fresco-brand__title {
+  font-family: var(--font-serif);
+  font-size: clamp(0.85rem, 1.1vw, 1.0rem);
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.fresco-nav__menu {
+  display: flex;
+  align-items: center;
+}
+
+.fresco-nav__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.2rem, 2.2vw, 2.5rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fresco-nav__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fresco-nav__item a {
+  text-decoration: none;
+  font-family: var(--font-serif);
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--ink);
+  padding: 0.2rem 0.1rem;
+  transition: color 0.2s ease;
+}
+
+.fresco-nav__item a:hover {
+  color: #8C6C38;
+}
+
+.fresco-nav__item--active a {
+  color: var(--ink);
+}
+
+.fresco-nav__indicator {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: var(--ink);
+  position: relative;
+  margin-top: 2px;
+}
+
+.fresco-nav__indicator::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.fresco-nav__right {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.btn-nav-connect {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #141210;
+  color: #FAF5E9;
+  border-radius: 9999px;
+  padding: 0.54rem 1.4rem;
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  border: 1px solid #141210;
+  box-shadow: 0 2px 8px rgba(20, 18, 16, 0.15);
+  transition: all 0.25s ease;
+}
+
+.btn-nav-connect:hover {
+  background: #2A2520;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(20, 18, 16, 0.25);
+}
+
+.btn-arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.btn-nav-connect:hover .btn-arrow,
+.btn-hero-primary:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+.fresco-compass-rose {
+  color: #8C6C38;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Central Negative Space & Core Messaging */
+.fresco-center-copy {
+  text-align: center;
+  max-width: 740px;
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: clamp(1rem, 3.8vh, 2.6rem);
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fresco-star-emblem {
+  margin-bottom: 0.5rem;
+  color: #B07A35;
+}
+
+.fresco-eyebrow-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  width: 100%;
+  margin-bottom: 0.35rem;
+}
+
+.fresco-eyebrow-rule {
+  display: inline-block;
+  width: 38px;
+  height: 1px;
+  background: rgba(140, 108, 56, 0.45);
+}
+
+.fresco-eyebrow {
+  font-family: var(--font-serif);
+  font-size: clamp(0.72rem, 0.92vw, 0.85rem);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #8C6C38;
+  font-weight: 600;
+  margin: 0;
+}
+
+.fresco-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 7.2vw, 6.2rem);
+  font-weight: 600;
+  line-height: 0.88;
+  letter-spacing: 0.03em;
+  margin: 0.4rem 0 0.8rem 0;
+}
+
+.fresco-title__line--mayank {
+  background: linear-gradient(135deg, #16120F 0%, #2A2018 65%, #6E4A22 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.fresco-title__line--kamdi {
+  background: linear-gradient(135deg, #8C6C38 0%, #B07A35 50%, #6E4A22 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.fresco-subtitle {
+  font-family: var(--font-serif);
+  font-size: clamp(0.72rem, 0.95vw, 0.88rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8C6C38;
+  margin: 0 0 1.05rem 0;
+}
+
+.fresco-tagline {
+  font-family: var(--font-serif);
+  font-size: clamp(1.2rem, 1.75vw, 1.55rem);
+  font-weight: 500;
+  line-height: 1.32;
+  color: #1A1613;
+  margin: 0 0 0.65rem 0;
+}
+
+.fresco-description {
+  font-family: var(--font-serif);
+  font-size: clamp(0.85rem, 1.02vw, 1.0rem);
+  line-height: 1.55;
+  color: #52473B;
+  max-width: 580px;
+  margin: 0 0 1.6rem 0;
+}
+
+/* Call to Action Buttons */
+.fresco-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+}
+
+.btn-hero-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #141210;
+  color: #FAF5E9;
+  border-radius: 9999px;
+  padding: 0.8rem 2.1rem;
+  font-family: var(--font-serif);
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  border: 1px solid #141210;
+  box-shadow: 0 4px 16px rgba(20, 18, 16, 0.22);
+  transition: all 0.25s ease;
+}
+
+.btn-hero-primary:hover {
+  background: #2A2520;
   transform: translateY(-2px);
-  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 6px 20px rgba(20, 18, 16, 0.32);
 }
 
-.cta-btn:focus-visible {
-  outline: 2px solid var(--color-accent-gold);
-  outline-offset: 2px;
+.btn-hero-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(250, 245, 233, 0.65);
+  color: #1A1613;
+  border-radius: 9999px;
+  padding: 0.8rem 2.1rem;
+  font-family: var(--font-serif);
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  border: 1px solid rgba(140, 108, 56, 0.45);
+  backdrop-filter: blur(8px);
+  transition: all 0.25s ease;
 }
 
+.btn-hero-secondary:hover {
+  border-color: #8C6C38;
+  background: rgba(250, 245, 233, 0.95);
+  color: #141210;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(140, 108, 56, 0.15);
+}
+
+/* Mobile & Tablet Responsive Adjustments */
+@media (max-width: 1024px) {
+  .fresco-nav__links {
+    display: none; /* Clean presentation on compact tablet/mobile */
+  }
+}
+
+@media (max-width: 640px) {
+  .fresco-content {
+    padding: 1.2rem 1.4rem;
+  }
+  
+  .fresco-brand__title {
+    font-size: 0.82rem;
+    letter-spacing: 0.18em;
+  }
+
+  .btn-nav-connect {
+    padding: 0.45rem 1.0rem;
+    font-size: 0.72rem;
+  }
+
+  .fresco-compass-rose {
+    display: none;
+  }
+
+  .fresco-title {
+    font-size: 2.8rem;
+  }
+
+  .fresco-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .btn-hero-primary,
+  .btn-hero-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+  }
+}
+
+/* ==========================================================================
+   Accessibility & Reduced Motion Overrides
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .fresco-glint {
+    animation: none;
+    opacity: 0.75;
+  }
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: none;
+  }
+}
+
+/* Focus styles for keyboard accessibility */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.fresco-nav a:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
