@@ -43,12 +43,12 @@ export default function Home() {
               <div className="nav-menu__group nav-menu__group--pages">
                 <p className="nav-menu__title">Explore</p>
                 <ul>
-                  <li style={{'--i': 0}}><a className="nav-menu__link" href="/" aria-current="page">Home</a></li>
-                  <li style={{'--i': 1}}><a className="nav-menu__link" href="/tracks">Tracks</a></li>
-                  <li style={{'--i': 2}}><a className="nav-menu__link" href="/guide">Guide</a></li>
-                  <li style={{'--i': 3}}><a className="nav-menu__link" href="/announcements">Announcements</a></li>
-                  <li style={{'--i': 4}}><a className="nav-menu__link" href="/sponsors">Sponsors</a></li>
-                  <li style={{'--i': 5}}><a className="nav-menu__link" href="/history">BIOS 25</a></li>
+                  <li style={{'--i': 0} as React.CSSProperties}><a className="nav-menu__link" href="/" aria-current="page">Home</a></li>
+                  <li style={{'--i': 1} as React.CSSProperties}><a className="nav-menu__link" href="/tracks">Tracks</a></li>
+                  <li style={{'--i': 2} as React.CSSProperties}><a className="nav-menu__link" href="/guide">Guide</a></li>
+                  <li style={{'--i': 3} as React.CSSProperties}><a className="nav-menu__link" href="/announcements">Announcements</a></li>
+                  <li style={{'--i': 4} as React.CSSProperties}><a className="nav-menu__link" href="/sponsors">Sponsors</a></li>
+                  <li style={{'--i': 5} as React.CSSProperties}><a className="nav-menu__link" href="/history">BIOS 25</a></li>
                 </ul>
               </div>
             </nav>
